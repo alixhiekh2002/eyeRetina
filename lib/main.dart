@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyphammad/btmBar/bottom_nav_bar.dart';
 import 'package:fyphammad/src/splash_screen.dart';
 
 void main() {
@@ -12,8 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
     );
   }
 }
-

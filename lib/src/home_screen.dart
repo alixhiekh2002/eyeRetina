@@ -12,14 +12,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // Fetch screen size
     final isTablet = size.width > 600; // Simple check for tablet devices
+    final padding = size.width * 0.04; // Responsive padding
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Home",
-          style: TextStyle(fontSize: 20),
-        ),
         backgroundColor: Colors.white,
+        actions: [
+          Text(
+            "Home",
+            style: TextStyle(fontSize: size.width * 0.05),
+          ),
+          SizedBox(
+            width: size.width * 0.56,
+          ),
+          CircleAvatar(
+              backgroundColor: Colors.red[300],
+              backgroundImage: ExactAssetImage("assets/ob.jpeg")),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
       ),
       backgroundColor: Colors.red[800],
       body: SafeArea(
@@ -30,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 // Header Section
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(padding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -41,21 +53,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Welcome Back!',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: isTablet ? 28 : 24,
+                                fontSize: isTablet
+                                    ? size.width * 0.05
+                                    : size.width * 0.06,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
                             'Hi, Hammad Akhtar',
                             style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: isTablet ? 18 : 16),
+                                fontSize: isTablet
+                                    ? size.width * 0.04
+                                    : size.width * 0.045),
                           ),
                         ],
                       ),
                       CircleAvatar(
-                        radius: isTablet ? 36 : 24,
-                        backgroundImage: const AssetImage(
-                            'assets/profile.png'), // Add your profile image
+                        backgroundColor: Colors.red[300],
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: size.width * 0.05,
+                        ),
                       ),
                     ],
                   ),
@@ -72,11 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     child: GridView.builder(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(padding),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: isTablet ? 3 : 2, // Dynamic columns
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
+                        crossAxisSpacing: size.width * 0.03,
+                        mainAxisSpacing: size.width * 0.03,
                         childAspectRatio: isTablet ? 1.3 : 1.0,
                       ),
                       itemCount: 5,
@@ -84,65 +103,74 @@ class _HomeScreenState extends State<HomeScreen> {
                         switch (index) {
                           case 0:
                             return _buildCard(
+                              size,
                               icon: Icons.thermostat,
                               title: 'Stage of Disease',
-                              child: _buildCircularProgress('Mild', 45),
+                              child: _buildCircularProgress(size, 'Mild', 45),
                             );
                           case 1:
                             return _buildCard(
+                              size,
                               icon: Icons.bar_chart,
                               title: 'Weekly Report',
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.show_chart,
-                                      size: isTablet ? 50 : 40,
+                                      size: isTablet
+                                          ? size.width * 0.08
+                                          : size.width * 0.07,
                                       color: Colors.red),
-                                  const SizedBox(height: 8),
-                                  const Text('Last Date',
+                                  SizedBox(height: size.height * 0.01),
+                                  Text('Last Date',
                                       style: TextStyle(
-                                          color: Colors.black54, fontSize: 12)),
-                                  const Text('11/15/2024',
+                                          color: Colors.black54,
+                                          fontSize: size.width * 0.03)),
+                                  Text('11/15/2024',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16)),
+                                          fontSize: size.width * 0.04)),
                                 ],
                               ),
                             );
                           case 2:
                             return _buildCard(
+                              size,
                               icon: Icons.favorite,
                               title: 'Retina Health',
-                              child: _buildGraph(),
+                              child: _buildGraph(size),
                             );
                           case 3:
                             return _buildCard(
+                              size,
                               icon: Icons.medical_services,
                               title: 'Disease Detected',
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   'No Diabetic Retinopathy',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize: size.width * 0.04),
                                 ),
                               ),
                             );
                           case 4:
                             return _buildCard(
+                              size,
                               icon: Icons.opacity,
                               title: 'Saturation',
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text('%',
+                                  Text('%',
                                       style: TextStyle(
-                                          color: Colors.black54, fontSize: 14)),
-                                  const Text('45%',
+                                          color: Colors.black54,
+                                          fontSize: size.width * 0.03)),
+                                  Text('45%',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
+                                          fontSize: size.width * 0.045)),
                                 ],
                               ),
                             );
@@ -158,25 +186,11 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 210, 134, 134),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.arrow_back), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
     );
   }
 
-  // Function to build each card widget
-  Widget _buildCard({
-    required IconData icon,
-    required String title,
-    required Widget child,
-  }) {
+  Widget _buildCard(Size size,
+      {required IconData icon, required String title, required Widget child}) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -184,15 +198,17 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(size.width * 0.01),
             child: Row(
               children: [
-                Icon(icon, color: Colors.red),
-                const SizedBox(width: 8),
+                Icon(icon, color: Colors.red, size: size.width * 0.05),
+                SizedBox(width: size.width * 0.02),
                 Text(
                   title,
-                  style: const TextStyle(
-                      color: Colors.black54, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      fontSize: size.width * 0.04),
                 ),
               ],
             ),
@@ -203,33 +219,32 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Function to create a mock circular progress widget
-  Widget _buildCircularProgress(String stage, double value) {
+  Widget _buildCircularProgress(Size size, String stage, double value) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 80,
-          width: 80,
+          height: size.width * 0.2,
+          width: size.width * 0.2,
           child: CircularProgressIndicator(
             value: value / 100,
-            strokeWidth: 8,
+            strokeWidth: size.width * 0.02,
             color: Colors.red,
             backgroundColor: Colors.red[100],
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: size.height * 0.01),
         Text(stage,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                fontSize: size.width * 0.04, fontWeight: FontWeight.bold)),
       ],
     );
   }
 
-  // Mock graph widget
-  Widget _buildGraph() {
+  Widget _buildGraph(Size size) {
     return Container(
-      height: 60,
-      width: 120,
+      height: size.width * 0.15,
+      width: size.width * 0.3,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.red, Colors.red.withOpacity(0)],
